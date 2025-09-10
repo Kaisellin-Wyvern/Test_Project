@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Scientific Calculator</title>
+<style>
+
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background: white;
+	font-family: Arial, sans-serif;
+}
+
+.calculator {
+	background: black;
+	padding: 20px;
+	border-radius: 20px;
+	width: 700px;
+}
+
+#display {
+	width: 100%;
+	height: 70px;
+	font-size: 36px;
+	text-align: right;
+	margin-bottom: 15px;
+	border: none;
+	background: black;
+	color: white;
+	outline: none;
+}
+
+.buttons {
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	gap: 10px;
+}
+
+button {
+	height: 65px;
+	font-size: 18px;
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
+	background: #222;
+	color: white;
+	transition: background 0.2s;
+}
+
+button:hover { background: #444; }
+
+.zero {
+	grid-column: span 2;
+	border-radius: 35px;
+	text-align: left;
+	padding-left: 25px;
+}
+
+</style>
+</head>
+<body>
+
+  <div class="calculator">
+  <input type="text" id="display" value="0" disabled>
+  <div class="buttons">
+
+<button>(</button>
+<button>)</button>
+<button>mc</button>
+<button>m+</button>
+<button>m-</button>
+<button>mr</button>
+<button>AC</button>
+<button>+/-</button>
+<button>%</button>
+<button>÷</button>
+<button>2ⁿᵈ</button>
+<button>x²</button>
+<button>x³</button>
+<button>xʸ</button>
+<button>eˣ</button>
+<button>10ˣ</button>
+<button>7</button>
+<button>8</button>
+<button>9</button>
+<button>×</button>
+<button>1/x</button>
+<button>²√x</button>
+<button>³√x</button>
+<button>ʸ√x</button>
+<button>ln</button>
+<button>log₁₀</button>
+<button>4</button>
+<button>5</button>
+<button>6</button>
+<button>−</button>
+<button>x!</button>
+<button>sin</button>
+<button>cos</button>
+<button>tan</button>
+<button>e</button>
+<button>EE</button>
+<button>1</button>
+<button>2</button>
+<button>3</button>
+<button>+</button>
+<button>Rad</button>
+<button>sinh</button>
+<button>cosh</button>
+<button>tanh</button>
+<button>π</button>
+<button>Rand</button>
+<button class="zero">0</button>
+<button>.</button>
+<button>=</button>
+
+</div>
+</div>
+</body>
+</html>
