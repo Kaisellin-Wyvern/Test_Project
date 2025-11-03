@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EcoID - Login</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      background: url('green1.JPG') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+.floating-logo {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  z-index: 10;
+}
+
+.floating-logo:hover {
+  color: #79B791; /* soft green hover */
+}
+
+
+    .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.40);
+      z-index: 0;
+    }
+
+    .login-box {
+      position: relative;
+      z-index: 2;
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      width: 320px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: fadeSlideIn 0.8s ease forwards;
+    }
+
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    h2 { color: #2e7d32; margin-bottom: 10px; }
+    input, button {
+      width: 100%; padding: 10px; margin: 8px 0;
+      border: 1px solid #ccc; border-radius: 5px;
+    }
+    button {
+      background: #2e7d32; color: white; cursor: pointer;
+      border: none;
+    }
+    button:hover { background: #1b5e20; }
+
+    .switch a {
+      color: #2e7d32;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2 class="floating-logo" onclick="window.location.href='Main.html'">EcoID</h2>
+  <div class="overlay"></div>
+
+  <div class="login-box" id="loginForm">
+    <h2>EcoID Login</h2>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button id="loginBtn">Login</button>
+    <div class="switch">
+      <p>Don’t have an account? <a id="showRegister">Register</a></p>
+    </div>
+  </div>
+
+  <div class="login-box" id="registerForm" style="display:none;">
+    <h2>Register</h2>
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="email" id="regEmail" placeholder="Email" required>
+    <input type="password" id="regPass" placeholder="Password" required>
+    <button id="regBtn">Register</button>
+    <div class="switch">
+      <p>Already have an account? <a id="showLogin">Login</a></p>
+    </div>
+  </div>
+
+  <script>
+    const admin = { email: "admin@example.com", password: "admin123" };
+
+    // Login Function
+    document.getElementById('loginBtn').onclick = () => {
+      const email = document.getElementById('email').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      if (!email || !pass) return alert("Please enter both fields.");
+
+      const users = JSON.parse(localStorage.getItem('ecoid_users') || "[]");
+      const found = users.find(u => u.email === email && u.password === pass);
+
+      if ((email === admin.email && pass === admin.password) || found) {
+        localStorage.setItem('ecoid_loggedIn', email);
+        window.location.href = "ecoid.html";
+      } else {
+        alert("Invalid credentials.");
+      }
+    };
+
+    // Register Function
+    document.getElementById('regBtn').onclick = () => {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const pass = document.getElementById('regPass').value.trim();
+      if (!name || !email || !pass) return alert("Please complete all fields.");
+      let users = JSON.parse(localStorage.getItem('ecoid_users') || "[]");
+      users.push({ name, email, password: pass });
+      localStorage.setItem('ecoid_users', JSON.stringify(users));
+      alert("Registered successfully! You can now log in.");
+      showLogin();
+    };
+
+    // Toggle Login/Register Interface
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const showRegister = document.getElementById('showRegister');
+    const showLoginLink = document.getElementById('showLogin');
+
+    showRegister.addEventListener('click', () => {
+      loginForm.style.display = 'none';
+      registerForm.style.display = 'block';
+      registerForm.style.animation = 'none';
+      registerForm.offsetHeight;
+      registerForm.style.animation = 'fadeSlideIn 0.8s ease forwards';
+    });
+
+    showLoginLink.addEventListener('click', showLogin);
+
+    function showLogin() {
+      registerForm.style.display = 'none';
+      loginForm.style.display = 'block';
+      loginForm.style.animation = 'none';
+      loginForm.offsetHeight;
+      loginForm.style.animation = 'fadeSlideIn 0.8s ease forwards';
+    }
+
+    // Auto open register if ?register=true in URL
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('register') === 'true') {
+      loginForm.style.display = 'none';
+      registerForm.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
