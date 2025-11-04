@@ -2,140 +2,133 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EcoID - Dashboard</title>
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family: Arial, sans-serif;
-      background:#f1f8e9;
-      margin:0;
-      padding:0;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      background: url('green1.JPG') no-repeat center center;
+      background-size: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+      position: relative;
     }
 
-    /* Header */
-header {
-  background: #2e7d32;
-  color: white;
-  padding: 0px 40px; /* top/bottom 15px, left/right 40px */
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.55);
+      z-index: 0;
+    }
 
-header h1.floating-logo {
-  cursor: pointer;
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.9rem;
-  font-weight: 600;
-  color: white;
-  transition: color 0.3s ease;
-  margin-left: 10px; /* moves EcoID slightly inward from left */
-}
-
-header button {
-  background: white;
-  color: #2e7d32;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 10px; /* moves Logout slightly inward from right */
-}
-
-
-
-    /* Floating logo style */
-    .floating-logo {
-      cursor: pointer;
-      font-family: 'Poppins', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 600;
+    header {
+      background: #2e7d32;
       color: white;
+      padding: 15px 25px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    header h1.floating-logo {
+      cursor: pointer;
+      font-size: 1.9rem;
+      font-weight: 600;
       transition: color 0.3s ease;
     }
-    .floating-logo:hover {
-      color: #79B791;
-    }
+
+    header h1.floating-logo:hover { color: #79B791; }
+
+    header button { background: white; color: #2e7d32; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
 
     main {
-      padding:20px;
-      width:100%;
-      max-width:900px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
+      position: relative;
+      z-index: 5;
+      padding: 20px;
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .card {
-      background:white;
-      padding:20px;
-      border-radius:10px;
-      box-shadow:0 0 5px rgba(0,0,0,0.1);
-      margin-bottom:20px;
-      width:100%;
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
     }
+
+    h2, h3 { color: #2e7d32; }
+
+    h3 { margin-top: 20px; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+
+    input, select, textarea { width: 100%; padding: 8px; margin: 5px 0 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+
+    button.action { background: #2e7d32; color: white; border: none; border-radius: 5px; padding: 8px 12px; cursor: pointer; margin-top: 10px; }
 
     table {
-      width:100%;
-      border-collapse:collapse;
-      display:block;
-      max-height:400px;
-      overflow-y:auto;
+      width: 100%;
+      border-collapse: collapse;
+      display: block;
+      max-height: 400px;
+      overflow-y: auto;
+      background: white;
+      color: black;
     }
 
-    th, td {
-      border-bottom:1px solid #ddd;
-      padding:8px;
-      text-align:left;
-    }
+    th, td { border-bottom: 1px solid #ddd; padding: 8px; text-align: left; white-space: nowrap; }
 
-    th {
-      background:#e8f5e9;
-    }
+    th { background: #e8f5e9; }
 
-    td {
-      white-space:nowrap;
-    }
+    button.action-table { background: #2e7d32; color: white; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer; }
+    button.delete { background: #c62828; }
 
-    button.action {
-      background:#2e7d32;
-      color:white;
-      border:none;
-      border-radius:5px;
-      padding:5px 10px;
-      cursor:pointer;
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
     }
-
-    button.delete {
-      background:#c62828;
+    .toggle-switch input { display: none; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 24px;
     }
-
-    input, select, textarea {
-      width:100%;
-      padding:8px;
-      margin:5px 0 10px 0;
-      border:1px solid #ccc;
-      border-radius:5px;
-      box-sizing:border-box;
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
     }
+    input:checked + .slider { background-color: #2e7d32; }
+    input:checked + .slider:before { transform: translateX(26px); }
 
-    h3 { margin-top:20px; border-bottom:1px solid #ccc; padding-bottom:5px; }
-
-    /* Modal */
-    .modal {
-      display:none;
-      position:fixed;
-      z-index:100;
-      left:0;
-      top:0;
-      width:100%;
-      height:100%;
-      overflow:auto;
-      background:rgba(0,0,0,0.6);
-    }
+    .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow:auto; background: rgba(0,0,0,0.6); }
 
     .modal-content {
       background:#fff;
@@ -147,53 +140,66 @@ header button {
       position:relative;
       max-height:90vh;
       overflow-y:auto;
+      color:black;
     }
 
-    .close {
-      color:#aaa;
-      position:absolute;
-      top:10px;
-      right:15px;
-      font-size:28px;
-      font-weight:bold;
-      cursor:pointer;
-    }
-
+    .close { color:#aaa; position:absolute; top:10px; right:15px; font-size:28px; font-weight:bold; cursor:pointer; }
     .close:hover { color:#000; }
-    .file-input { border:none; padding:0; }
+
+    /* Awareness Corner */
+    #awarenessCorner {
+      background:#e8f5e9;
+      border-left:5px solid #2e7d32;
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      color: black;
+      margin-bottom: 20px;
+    }
+
+    #awarenessCorner h2 { color:#2e7d32; }
+
+    @media (max-width: 600px) { h2 { font-size: 1.5rem; } h3 { font-size: 1rem; } }
   </style>
 </head>
 <body>
-<header>
-  <div style="padding-left: 20px;">
+  <div class="overlay"></div>
+  <header>
     <h1 class="floating-logo" onclick="window.location.href='Main.html'">EcoID</h1>
-  </div>
-  <button id="logoutBtn">Logout</button>
-</header>
-
+    <button id="logoutBtn">Logout</button>
+  </header>
 
   <main>
+    <!-- Awareness Corner (always visible) -->
+    <div class="card" id="awarenessCorner">
+      <div style="font-size:2rem;">🌱</div>
+      <div>
+        <h2>Awareness Corner</h2>
+        <p>
+          Using digital IDs helps reduce paper waste and save energy. 
+          Submit applications online, store documents digitally, and embrace eco-friendly practices 
+          to contribute to a greener, more sustainable campus. Every small action counts!
+        </p>
+      </div>
+    </div>
+
     <!-- Student Form -->
     <div class="card" id="studentFormCard">
-      <h2><center>MATS College of Technology ID Registration Form</center></h2><br><br>
-      <!-- Personal Information -->
+      <h2><center>MATS College of Technology ID Registration Form</center></h2><br>
+      <!-- Personal, Contact, Academic, Family, ID, Optional sections remain the same -->
       <h3>Personal Information</h3>
       <input type="text" id="fullName" placeholder="Full Name (Last, First, Middle)" required>
       <input type="text" id="studentID" placeholder="Student Number / ID Number">
       <input type="date" id="dob" placeholder="Date of Birth">
       <input type="number" id="age" placeholder="Age">
       <select id="gender">
-        <option value="">Select Gender</option>
-        <option>Male</option>
-        <option>Female</option>
-        <option>Other</option>
+        <option value="">Select Gender</option><option>Male</option><option>Female</option><option>Other</option>
       </select>
       <input type="text" id="civilStatus" placeholder="Civil Status">
       <input type="text" id="nationality" placeholder="Nationality / Citizenship">
       <input type="text" id="religion" placeholder="Religion">
       <input type="text" id="bloodType" placeholder="Blood Type">
 
-      <!-- Contact Information -->
       <h3>Contact Information</h3>
       <input type="text" id="homeAddress" placeholder="Home Address">
       <input type="text" id="mobileNumber" placeholder="Mobile Number">
@@ -202,44 +208,36 @@ header button {
       <input type="text" id="emergencyRelation" placeholder="Relationship to Emergency Contact">
       <input type="text" id="emergencyNumber" placeholder="Emergency Contact Number">
 
-      <!-- Academic Information -->
       <h3>Academic Information</h3>
       <input type="text" id="course" placeholder="Course / Program">
       <input type="text" id="yearLevel" placeholder="Year Level">
       <input type="text" id="section" placeholder="Section / Block">
       <input type="text" id="department" placeholder="Department / College Name">
       <select id="studentStatus">
-        <option value="">Select Student Status</option>
-        <option>New</option>
-        <option>Old</option>
-        <option>Transferee</option>
-        <option>Returnee</option>
+        <option value="">Select Student Status</option><option>New</option><option>Old</option><option>Transferee</option><option>Returnee</option>
       </select>
 
-      <!-- Family Information -->
       <h3>Family Information</h3>
-      <input type="text" id="fatherName" placeholder="Father’s Name">
-      <input type="text" id="motherName" placeholder="Mother’s Name">
-      <input type="text" id="guardianName" placeholder="Guardian’s Name">
+      <input type="text" id="fatherName" placeholder="Father's Name">
+      <input type="text" id="motherName" placeholder="Mother's Name">
+      <input type="text" id="guardianName" placeholder="Guardian's Name">
       <input type="text" id="guardianContact" placeholder="Contact Number of Parent/Guardian">
       <input type="text" id="guardianOccupation" placeholder="Occupation of Parent/Guardian">
 
-      <!-- ID Details -->
       <h3>ID Details</h3>
       <label for="idType">ID Type</label>
       <input type="text" id="idType">
       <label for="assignedID">ID Number</label>
       <input type="text" id="assignedID">
       <label for="studentSignature">Signature of Student</label>
-      <input type="file" id="studentSignature" class="file-input">
+      <input type="file" id="studentSignature" class="file-input" accept="image/*">
       <label for="registrarSignature">Signature of Registrar</label>
-      <input type="file" id="registrarSignature" class="file-input">
+      <input type="file" id="registrarSignature" class="file-input" accept="image/*">
       <label for="applicationDate">Date of Application</label>
       <input type="date" id="applicationDate">
       <label for="photoBox">Photo (1x1 or 2x2)</label>
-      <input type="file" id="photoBox" class="file-input">
+      <input type="file" id="photoBox" class="file-input" accept="image/*">
 
-      <!-- Optional / Special Sections -->
       <h3>Optional / Special Sections</h3>
       <input type="text" id="optionalBlood" placeholder="Blood Type (Emergency)">
       <textarea id="medicalConditions" placeholder="Medical Conditions / Allergies"></textarea>
@@ -247,7 +245,7 @@ header button {
       <input type="date" id="dateOfIssuance" placeholder="Date of Issuance">
       <textarea id="remarks" placeholder="Remarks / For Official Use Only"></textarea>
 
-      <button class="action" style="margin-top:15px;" id="submitApp">Submit Application</button>
+      <button class="action" id="submitApp">Submit Application</button>
     </div>
 
     <!-- Admin Table -->
@@ -266,27 +264,16 @@ header button {
         <tbody></tbody>
       </table>
     </div>
-
-    <!-- Awareness Corner -->
-    <div class="card" id="awarenessCorner" style="background:#e8f5e9; border-left:5px solid #2e7d32; display:flex; align-items:flex-start; gap:10px;">
-      <div style="font-size:2rem;">🌱</div>
-      <div>
-        <h2 style="margin-top:0; color:#2e7d32;">Awareness Corner</h2>
-        <p style="margin:5px 0; line-height:1.5;">
-          Using digital IDs helps reduce paper waste and save energy. 
-          Submit applications online, store documents digitally, and embrace eco-friendly practices 
-          to contribute to a greener, more sustainable campus. Every small action counts!
-        </p>
-      </div>
-    </div>
   </main>
 
   <!-- Modal -->
   <div class="modal" id="detailsModal">
-    <div class="modal-content">
+    <div class="modal-content" style="display:flex; flex-direction:column; align-items:center;">
       <span class="close">&times;</span>
-      <div id="modalBody"></div>
+      <div id="digitalIDCard" style="width:350px; padding:20px; background:#e8f5e9; color:black; border-radius:10px; font-family:Poppins, sans-serif; text-align:center; border:2px solid #2e7d32;">
     </div>
+    <button onclick="printIDCard()" style="margin-top:10px; padding:10px 15px; background:#2e7d32; color:white; border:none; border-radius:5px; cursor:pointer;">Print ID</button>
+</div>
   </div>
 
   <script>
@@ -294,7 +281,6 @@ header button {
     const admin = {email: "admin@example.com"};
     const tableBody = document.querySelector('#appTable tbody');
     const modal = document.getElementById('detailsModal');
-    const modalBody = document.getElementById('modalBody');
     const closeBtn = document.querySelector('.close');
 
     if (!email) window.location.href = "login.html";
@@ -322,12 +308,28 @@ header button {
           <td>${app.yearLevel}</td>
           <td>${app.status || 'Processing'}</td>
           <td>
-            <button class="action" onclick="viewDetails(${i})">View</button>
+            <button class="action-table" onclick="viewDetails(${i})">View</button>
+            <label class="toggle-switch">
+              <input type="checkbox" ${app.status==='Approved' ? 'checked' : ''} onchange="toggleStatus(${i}, this)">
+              <span class="slider"></span>
+            </label>
             <button class="delete" onclick="deleteApp(${i})">Delete</button>
           </td>`;
         tableBody.appendChild(tr);
       });
     }
+
+   function toggleStatus(i, checkbox){
+  applications[i].status = checkbox.checked ? 'Approved' : 'Processing';
+  localStorage.setItem('ecoid_apps', JSON.stringify(applications));
+  renderTable();
+
+  // Generate digital ID automatically if approved
+  if(checkbox.checked){
+    generateDigitalID(applications[i], i);
+  }
+}
+
 
     function deleteApp(i) {
       if(!confirm("Delete this application?")) return;
@@ -338,62 +340,189 @@ header button {
 
     function viewDetails(i) {
       const app = applications[i];
-      modalBody.innerHTML = "";
-      for(const key in app){
-        modalBody.innerHTML += `<p><strong>${key.replace(/([A-Z])/g,' $1')}:</strong> ${app[key]}</p>`;
+      
+      // If approved, show digital ID card
+      if(app.status === 'Approved') {
+        generateDigitalID(app, i);
+      } else {
+        // Show all details for non-approved applications
+        const card = document.getElementById('digitalIDCard');
+        card.innerHTML = "";
+        for(const key in app){
+          if(key !== 'studentSignature' && key !== 'registrarSignature' && key !== 'photoBox') {
+            card.innerHTML += `<p style="text-align:left;"><strong>${key.replace(/([A-Z])/g,' $1')}:</strong> ${app[key]}</p>`;
+          }
+        }
+        modal.style.display = "block";
       }
-      modal.style.display = "block";
     }
 
     closeBtn.onclick = () => modal.style.display = "none";
     window.onclick = (e) => { if(e.target==modal) modal.style.display="none"; }
 
-    document.getElementById('submitApp').onclick = () => {
+    document.getElementById('submitApp').onclick = async () => {
       const getValue = (id)=>document.getElementById(id).value.trim();
+      
+      // Helper function to convert file to base64
+      const getFileAsBase64 = (fileInputId) => {
+        return new Promise((resolve) => {
+          const fileInput = document.getElementById(fileInputId);
+          const file = fileInput.files[0];
+          if (!file) {
+            resolve('');
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.onerror = () => resolve('');
+          reader.readAsDataURL(file);
+        });
+      };
+
+      // Get image data
+      const photoData = await getFileAsBase64('photoBox');
+      const studentSigData = await getFileAsBase64('studentSignature');
+      const registrarSigData = await getFileAsBase64('registrarSignature');
+
       const studentData = {
-        fullName: getValue('fullName'),
-        studentID: getValue('studentID'),
-        dob: getValue('dob'),
-        age: getValue('age'),
-        gender: getValue('gender'),
-        civilStatus: getValue('civilStatus'),
-        nationality: getValue('nationality'),
-        religion: getValue('religion'),
-        bloodType: getValue('bloodType'),
-        homeAddress: getValue('homeAddress'),
-        mobileNumber: getValue('mobileNumber'),
-        emailAddress: getValue('emailAddress'),
-        emergencyPerson: getValue('emergencyPerson'),
-        emergencyRelation: getValue('emergencyRelation'),
-        emergencyNumber: getValue('emergencyNumber'),
-        course: getValue('course'),
-        yearLevel: getValue('yearLevel'),
-        section: getValue('section'),
-        department: getValue('department'),
-        studentStatus: getValue('studentStatus'),
-        fatherName: getValue('fatherName'),
-        motherName: getValue('motherName'),
-        guardianName: getValue('guardianName'),
-        guardianContact: getValue('guardianContact'),
-        guardianOccupation: getValue('guardianOccupation'),
-        idType: getValue('idType'),
-        assignedID: getValue('assignedID'),
-        studentSignature: getValue('studentSignature'),
-        registrarSignature: getValue('registrarSignature'),
-        applicationDate: getValue('applicationDate'),
-        photoBox: getValue('photoBox'),
-        optionalBlood: getValue('optionalBlood'),
-        medicalConditions: getValue('medicalConditions'),
-        addressOnID: getValue('addressOnID'),
-        dateOfIssuance: getValue('dateOfIssuance'),
-        remarks: getValue('remarks'),
+        fullName: getValue('fullName'), studentID: getValue('studentID'), dob: getValue('dob'),
+        age: getValue('age'), gender: getValue('gender'), civilStatus: getValue('civilStatus'),
+        nationality: getValue('nationality'), religion: getValue('religion'), bloodType: getValue('bloodType'),
+        homeAddress: getValue('homeAddress'), mobileNumber: getValue('mobileNumber'), emailAddress: getValue('emailAddress'),
+        emergencyPerson: getValue('emergencyPerson'), emergencyRelation: getValue('emergencyRelation'), emergencyNumber: getValue('emergencyNumber'),
+        course: getValue('course'), yearLevel: getValue('yearLevel'), section: getValue('section'), department: getValue('department'),
+        studentStatus: getValue('studentStatus'), fatherName: getValue('fatherName'), motherName: getValue('motherName'),
+        guardianName: getValue('guardianName'), guardianContact: getValue('guardianContact'), guardianOccupation: getValue('guardianOccupation'),
+        idType: getValue('idType'), assignedID: getValue('assignedID'), 
+        studentSignature: studentSigData,
+        registrarSignature: registrarSigData, 
+        applicationDate: getValue('applicationDate'), 
+        photoBox: photoData,
+        optionalBlood: getValue('optionalBlood'), medicalConditions: getValue('medicalConditions'),
+        addressOnID: getValue('addressOnID'), dateOfIssuance: getValue('dateOfIssuance'), remarks: getValue('remarks'),
         status: 'Processing'
       };
+      
+      // Check if required fields are filled
+      if(!studentData.fullName || !studentData.course || !studentData.yearLevel) {
+        alert("Please fill in all required fields (Name, Course, Year Level)");
+        return;
+      }
+      
       applications.push(studentData);
       localStorage.setItem('ecoid_apps', JSON.stringify(applications));
-      alert("Application submitted successfully!");
-      document.getElementById('studentFormCard').reset?.();
+      // compute ready date: 9 days from now
+      const now = new Date();
+      const ready = new Date(now.getTime() + 9*24*60*60*1000);
+      studentData.readyDate = ready.toISOString();
+      // update storage with readyDate
+      applications[applications.length-1] = studentData;
+      localStorage.setItem('ecoid_apps', JSON.stringify(applications));
+
+      // show confirmation in page with pickup date
+      const formatted = ready.toLocaleString();
+      document.getElementById('studentFormCard').innerHTML = `
+        <h2 style="text-align:center;color:#2e7d32;">Application Received</h2>
+        <p style="text-align:center;">Your ID will be ready to pick up in <strong>9 days</strong> on:<br><strong>${formatted}</strong></p>
+        <div style="text-align:center; margin-top:20px;"><button onclick="window.location.reload()" style="background:#2e7d32;color:#fff;border:none;padding:10px 14px;border-radius:6px;cursor:pointer;">OK</button></div>
+      `;
+      
+  // Clear form fields from storage (inputs cleared visually by replacing the card)
+  // nothing further required here
     };
+
+function generateDigitalID(student, index){
+  const card = document.getElementById('digitalIDCard');
+
+  const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(student.emailAddress||student.fullName)}`;
+
+  card.innerHTML = `
+    <div style="border-bottom:2px solid #2e7d32; padding-bottom:10px; margin-bottom:10px; overflow:auto;">
+      <img src="mats-removebg-preview.png" alt="MATS College Logo" style="width:60px; height:60px; float:left; object-fit:contain;">
+      <h3 style="margin:0; line-height:60px;">MATS College of Technology</h3>
+    </div>
+    <div style="clear:both;"></div>
+    <!-- visible student photo -->
+    <img id="modalStudentPhoto" src="${student.photoBox || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'140\' height=\'140\'%3E%3Crect fill=\'%23ddd\' width=\'140\' height=\'140\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23999\'%3ENo Photo%3C/text%3E%3C/svg%3E'}" alt="Student Photo" style="display:block; margin:10px auto 0; width:140px; height:140px; border-radius:50%; object-fit:cover; border:2px solid #2e7d32;">
+    <div style="text-align:center; margin-top:8px;">
+      <button id="editPhotoBtn" style="background:#fff; border:1px solid #ccc; padding:8px 12px; border-radius:6px; cursor:pointer;">Edit Photo</button>
+      <input id="editPhotoInput" type="file" accept="image/*" style="display:none;">
+    </div>
+    <h2 style="margin:5px 0;">${student.fullName}</h2>
+    <p>ID Number: <strong>${student.assignedID || 'N/A'}</strong></p>
+    <p>Course: ${student.course}</p>
+    <p>Year: ${student.yearLevel}</p>
+    <p>Status: <span style="color:green; font-weight:bold;">Approved ✅</span></p>
+    <div style="display:flex; justify-content:space-between; margin-top:15px; align-items:center;">
+      <div>
+        <p style="margin:2px 0; font-size:0.8rem;">Student Signature</p>
+        <img src="${student.studentSignature || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'40\'%3E%3Crect fill=\'%23fff\' width=\'100\' height=\'40\'/%3E%3C/svg%3E'}" alt="Student Signature" style="width:100px; height:40px; object-fit:contain; border-top:1px solid #000;">
+      </div>
+      <div>
+        <p style="margin:2px 0; font-size:0.8rem;">Registrar Signature</p>
+        <img src="${student.registrarSignature || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'40\'%3E%3Crect fill=\'%23fff\' width=\'100\' height=\'40\'/%3E%3C/svg%3E'}" alt="Registrar Signature" style="width:100px; height:40px; object-fit:contain; border-top:1px solid #000;">
+      </div>
+      <div>
+        <img src="${qrCodeURL}" alt="QR Code">
+      </div>
+    </div>
+    <p style="font-size:0.7rem; margin-top:10px;">*This is a digitally generated ID from EcoID System*</p>
+  `;
+
+  modal.style.display = 'block';
+}
+
+// Handle photo edit upload from modal
+document.addEventListener('change', async function(e){
+  if(e.target && e.target.id === 'editPhotoInput'){
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev){
+      const dataUrl = ev.target.result;
+      // find which student is currently displayed by matching name and update the first matching record
+      const modalNameEl = document.querySelector('#digitalIDCard h2');
+      const name = modalNameEl ? modalNameEl.textContent.trim() : null;
+      if(!name) return;
+      const idx = applications.findIndex(a => (a.fullName||'').toLowerCase() === name.toLowerCase());
+      if(idx === -1) {
+        // fallback: update the last application
+        applications[applications.length-1].photoBox = dataUrl;
+        localStorage.setItem('ecoid_apps', JSON.stringify(applications));
+        // update displayed image
+        const img = document.querySelector('#digitalIDCard img[alt="Student Photo"]');
+        if(img) img.src = dataUrl;
+        return;
+      }
+      applications[idx].photoBox = dataUrl;
+      localStorage.setItem('ecoid_apps', JSON.stringify(applications));
+      const img = document.querySelector('#digitalIDCard img[alt="Student Photo"]');
+      if(img) img.src = dataUrl;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// Trigger hidden file input when button is clicked
+document.addEventListener('click', function(e){
+  if(e.target && e.target.id === 'editPhotoBtn'){
+    const input = document.getElementById('editPhotoInput');
+    if(input) input.click();
+  }
+});
+
+document.getElementById('closeID').onclick = () => {
+  modal.style.display = 'none';
+}
+
+function printIDCard(){
+  const content = document.getElementById('digitalIDCard').innerHTML;
+  const newWindow = window.open('', '', 'width=400,height=600');
+  newWindow.document.write(`<html><head><title>Student ID</title></head><body>${content}</body></html>`);
+  newWindow.document.close();
+  newWindow.print();
+}
+
   </script>
 </body>
 </html>
